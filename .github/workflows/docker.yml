@@ -3,6 +3,7 @@ on: [push, pull_request]
 jobs:
   container:
     name: Create container
+    runs-on: ubuntu-latest
     steps:
       - name: Container build and push
         id: docker # steps.docker.outputs.FULL_IMAGE_NAME
