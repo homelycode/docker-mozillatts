@@ -1,0 +1,16 @@
+[Unit]
+Description=TTS Container
+After=docker.service
+Requires=docker.service
+
+[Service]
+TimeoutStartSec=240
+ExecStartPre=/usr/bin/docker pull docker.pkg.github.com/homelycode/docker-mozillatts/tts:latest
+ExecStart=/usr/local/bin/systemd-docker --cgroups name=systemd run --rm --name %n -p 5002:5002 docker.pkg.github.com/homelycode/docker-mozillatts/tts:latest
+Restart=always
+RestartSec=10s
+Type=notify
+NotifyAccess=all
+
+[Install]
+WantedBy=multi-user.target
