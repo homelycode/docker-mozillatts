@@ -5,6 +5,9 @@ jobs:
     name: Create container
     runs-on: ubuntu-latest
     steps:
+      - name: Check out build code
+        uses: actions/checkout@v2
+
       - name: Container build and push
         id: docker # steps.docker.outputs.FULL_IMAGE_NAME
         uses: whoan/docker-build-with-cache-action@v5
