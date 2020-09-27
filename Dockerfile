@@ -50,12 +50,14 @@ RUN cd /tmp && \
     rm -Rf /tmp/TTS
 
 # Patch for 'AttrDict' object has no attribute 'gst' in config
+# Also turn on windowing to stop early term https://github.com/mozilla/TTS/issues/170#issuecomment-486494470
 RUN echo '{"gst":{"gst_embedding_dim": null,"gst_num_heads": null,"gst_style_tokens": null}}' > /tmp/patch.json && \
+	echo '{"windowing" : true}' > /tmp/windowing.json && \
     pip install demjson && \
     apt-get update && apt-get install --yes jq && rm -rf /var/lib/apt/lists/* && \ 
     mv /model/tts.json /model/_tts.json && \
     jsonlint -Sf --sort preserve /model/_tts.json > /tmp/tts.json && \
-    jq -s '.[1] + .[0]' /tmp/tts.json /tmp/patch.json > /tmp/merged.json && \
+    jq -s '.[1] + .[0] + .[2]' /tmp/tts.json /tmp/patch.json /tmp/windowing.json > /tmp/merged.json && \
     jsonlint -Sf --sort preserve  --html-safe /tmp/merged.json > /model/tts.json
 
 WORKDIR /model
