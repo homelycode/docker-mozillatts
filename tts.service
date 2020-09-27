@@ -4,13 +4,15 @@ After=docker.service
 Requires=docker.service
 
 [Service]
+Environment=CONTAINER=docker.pkg.github.com/homelycode/docker-mozillatts/tts:latest
 TimeoutStartSec=240
-ExecStartPre=/usr/bin/docker pull docker.pkg.github.com/homelycode/docker-mozillatts/tts:latest
-ExecStart=/usr/bin/docker run --runtime=nvidia --rm --name %n -p 5002:5002 docker.pkg.github.com/homelycode/docker-mozillatts/tts:latest
+ExecStartPre=-/usr/bin/docker stop %n
+ExecStartPre=-/usr/bin/docker rm %n
+ExecStartPre=/usr/bin/docker pull $CONTAINER
+ExecStart=/usr/bin/docker run --runtime=nvidia --rm --name %n -p 5002:5002 ${CONTAINER}
+ExecStop=/usr/bin/docker stop %n
 Restart=always
 RestartSec=10s
-Type=notify
-NotifyAccess=all
 
 [Install]
 WantedBy=multi-user.target
