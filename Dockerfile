@@ -1,4 +1,4 @@
-FROM nvidia/cuda:10.1-runtime
+FROM nvidia/cuda:11.0-runtime
 
 RUN apt-get update && \
     apt-get install --yes --no-install-recommends \
@@ -34,7 +34,7 @@ RUN cd /tmp && \
     chmod a+x ./goodls_linux_amd64 && \
     mkdir /model && \
     cd /model && \
-    echo 'https://drive.google.com/file/d/1Ty5DZdOc0F7OTGj9oJThYbL5iVu_2G0K/view?usp=sharing' | /tmp/goodls_linux_amd64 --np -f vocoder.pth.tar && mv best_model.pth.tar vocoder.pth.tar && \
+    echo 'https://drive.google.com/file/d/1Ty5DZdOc0F7OTGj9oJThYbL5iVu_2G0K/view?usp=sharing' | /tmp/goodls_linux_amd64 --np -f vocoder.pth.tar && mv checkpoint_1450000.pth.tar vocoder.pth.tar && \
     echo 'https://drive.google.com/file/d/1Rd0R_nRCrbjEdpOwq6XwZAktvugiBvmu/view?usp=sharing' | /tmp/goodls_linux_amd64 --np -f vocoder.json && mv config.json vocoder.json && \
     echo 'https://drive.google.com/file/d/1dntzjWFg7ufWaTaFy80nRz-Tu02xWZos/view?usp=sharing' | /tmp/goodls_linux_amd64 --np  -f tts.pth.tar && mv checkpoint_130000.pth.tar tts.pth.tar && \
     echo 'https://drive.google.com/file/d/18CQ6G6tBEOfvCHlPqP8EBI4xWbrr9dBc/view?usp=sharing' | /tmp/goodls_linux_amd64 --np -f tts.json && mv config.json tts.json && \
@@ -46,7 +46,7 @@ RUN cd /tmp && \
     cd TTS/ && \
     python setup.py bdist_wheel && \
     pip install ./dist/*.whl && \
-    mv TTS/server/templates /usr/local/lib/python3.6/dist-packages/TTS/server/. && \
+    mv TTS/server/templates /usr/local/lib/python3.8/dist-packages/TTS/server/. && \
     rm -Rf /tmp/TTS
 
 # Patch for 'AttrDict' object has no attribute 'gst' in config

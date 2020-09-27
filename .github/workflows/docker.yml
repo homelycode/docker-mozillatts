@@ -1,0 +1,16 @@
+name: Build a Dockerfile
+on: [push, pull_request]
+jobs:
+  container:
+    name: Create container
+    steps:
+      - name: Container build and push
+        id: docker # steps.docker.outputs.FULL_IMAGE_NAME
+        uses: whoan/docker-build-with-cache-action@v5
+        with:
+          username: rahulpowar
+          password: "${{ secrets.GITHUB_TOKEN }}"
+          registry: docker.pkg.github.com
+          image_name: tts        
+          image_tag: latest
+          push_git_tag: true
