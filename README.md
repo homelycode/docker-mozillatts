@@ -4,6 +4,10 @@ Build from mozilla TTS
 
 docker run --runtime=nvidia -p 5002:5002 docker.pkg.github.com/homelycode/docker-mozillatts/tts:latest
 
+# Example Playback
+
+SDL_AUDIODRIVER="alsa" AUDIODEV="hw:Loopback,0" ffplay -nodisp -f s16le -ar 22050 -ac 1 http://192.168.1.181:5002/audio
+
 # Notes
 
 docker run -ti --runtime=nvidia -p 5002:5002 --entrypoint=/bin/bash -v $(pwd):/app test
